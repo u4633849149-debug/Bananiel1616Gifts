@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robux Giveaway | Bananiel1616</title>
     <style>
-        /* Alles bleibt durchgehend Schwarz */
         body {
             background-color: #000000;
             color: white;
@@ -26,13 +25,13 @@
             border: 1px solid #333;
             width: 90%;
             max-width: 450px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
         }
 
         .step { display: none; }
         .active { display: block; }
 
-        h2 { color: #ff0000; margin-top: 0; }
+        h2 { color: #ff0000; margin-top: 0; font-size: 1.8em; }
 
         input {
             width: 100%;
@@ -43,6 +42,7 @@
             background: #222;
             color: white;
             box-sizing: border-box;
+            outline: none;
         }
 
         button, .abo-btn {
@@ -58,19 +58,20 @@
             width: 100%;
             font-size: 1em;
             transition: 0.3s;
+            margin-top: 10px;
         }
 
-        button:hover, .abo-btn:hover { background: #cc0000; }
+        button:hover, .abo-btn:hover { background: #cc0000; transform: scale(1.02); }
 
         #timer {
             font-size: 2.5em;
             color: #00ff00;
             margin: 20px 0;
             font-weight: bold;
-            letter-spacing: 2px;
+            font-family: 'Courier New', Courier, monospace;
         }
 
-        .success-msg { color: #00ff00; font-weight: bold; font-size: 1.2em; }
+        .success-msg { color: #00ff00; font-weight: bold; font-size: 1.3em; }
     </style>
 </head>
 <body>
@@ -78,58 +79,81 @@
     <div class="container">
         <div id="step1" class="step active">
             <h2>STOPP! 🛑</h2>
-            <p>Du musst erst meinen Kanal abonnieren, um am Giveaway teilzunehmen:</p>
-            <a href="https://youtube.com/@YTBananiel1616?sub_confirmation=1" target="_blank" class="abo-btn" onclick="document.getElementById('next1').style.display='block'">JETZT ABONNIEREN</a>
-            <button id="next1" style="display:none; margin-top: 15px;" onclick="nextStep(2)">Ich habe abonniert!</button>
+            <p>Abonniere meinen Kanal, um teilzunehmen:</p>
+            <a href="https://youtube.com/@YTBananiel1616?sub_confirmation=1" target="_blank" class="abo-btn" onclick="document.getElementById('next1').style.display='block'">1. JETZT ABONNIEREN</a>
+            <button id="next1" style="display:none;" onclick="nextStep(2)">2. WEITER ZUR TEILNAHME</button>
         </div>
 
         <div id="step2" class="step">
-            <h2>DEIN NAME</h2>
-            <p>Gib deinen Roblox-Benutzernamen ein:</p>
-            <input type="text" id="robloxName" placeholder="Dein Roblox Name...">
-            <button onclick="nextStep(3)">TEILNEHMEN</button>
+            <h2>DEIN ROBLOX NAME</h2>
+            <p>Gib deinen Namen ein, um im Lostopf zu landen:</p>
+            <input type="text" id="robloxName" placeholder="Roblox Benutzername...">
+            <button onclick="finishRegistration()">JETZT TEILNEHMEN</button>
         </div>
 
         <div id="step3" class="step">
-            <p class="success-msg">FERTIG! ✅</p>
-            <p>Du bist im Lostopf. Der Gewinner wird in diesem Zeitraum gezogen:</p>
-            <div id="timer">03:00:00:00</div>
-            <p style="font-size: 0.8em; color: #777;">Verpasse die Ziehung nicht auf meinem Kanal!</p>
+            <p class="success-msg">REGISTRIERT! ✅</p>
+            <p>Der Gewinner wird gezogen in:</p>
+            <div id="timer">00:00:00:00</div>
+            <p style="font-size: 0.8em; color: #888; margin-top: 20px;">Die Auflösung gibt es auf YouTube bei <b>Bananiel1616</b>!</p>
         </div>
     </div>
 
     <script>
-        function nextStep(stepNum) {
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step' + stepNum).classList.add('active');
+        // Ziel-Datum: 1. April 2026, 20:00 Uhr
+        const globalEndTime = new Date(2026, 3, 1, 20, 0, 0).getTime(); 
 
-            if(stepNum === 3) {
-                startCountdown();
+        window.onload = function() {
+            if (localStorage.getItem("hasJoined")) {
+                showStep(3);
+                startGlobalCountdown();
             }
+        };
+
+        function nextStep(stepNum) {
+            showStep(stepNum);
         }
 
-        function startCountdown() {
-            // Timer für 3 Tage (in Sekunden)
-            let totalSeconds = 3 * 24 * 60 * 60; 
+        function showStep(stepNum) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + stepNum).classList.add('active');
+        }
+
+        function finishRegistration() {
+            const name = document.getElementById('robloxName').value;
+            if(name.length < 3) {
+                alert("Bitte gib einen gültigen Namen ein!");
+                return;
+            }
+            localStorage.setItem("hasJoined", "true");
+            showStep(3);
+            startGlobalCountdown();
+        }
+
+        function startGlobalCountdown() {
             const timerDiv = document.getElementById('timer');
 
             const x = setInterval(function() {
-                let days = Math.floor(totalSeconds / (24 * 60 * 60));
-                let hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
-                let minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-                let seconds = Math.floor(totalSeconds % 60);
+                const now = new Date().getTime();
+                const distance = globalEndTime - now;
+
+                if (distance <= 0) {
+                    clearInterval(x);
+                    timerDiv.innerHTML = "ZIEHUNG LÄUFT...";
+                    timerDiv.style.color = "yellow";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                 timerDiv.innerHTML = 
                     (days < 10 ? "0" + days : days) + ":" +
                     (hours < 10 ? "0" + hours : hours) + ":" +
                     (minutes < 10 ? "0" + minutes : minutes) + ":" +
                     (seconds < 10 ? "0" + seconds : seconds);
-
-                if (totalSeconds <= 0) {
-                    clearInterval(x);
-                    timerDiv.innerHTML = "ZIEHUNG LÄUFT...";
-                }
-                totalSeconds--;
             }, 1000);
         }
     </script>
