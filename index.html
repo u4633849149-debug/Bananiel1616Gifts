@@ -2,40 +2,79 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Willkommen auf meiner Seite</title>
     <style>
-        /* Das Design für das Overlay (Hintergrund) */
+        /* Grundlegendes Design der Seite */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4; /* Eine helle Farbe für den Inhalt dahinter */
+        }
+
+        /* Das ist der blickdichte, schwarze Hintergrund (Overlay).
+           Er deckt die komplette Website ab.
+        */
         #overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000; /* Stockfinsteres Schwarz */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Sehr hoch, damit es über allem liegt */
         }
-        /* Das Fenster in der Mitte */
+
+        /* Das weiße Fenster in der Mitte */
         #popup {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
+            padding: 40px;
+            border-radius: 20px;
             text-align: center;
-            font-family: Arial, sans-serif;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.5); /* Schöner Schatten */
+            width: 90%;
+            max-width: 400px;
         }
+
+        #popup h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        #popup p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        /* Der rote Abo-Button */
         .abo-button {
-            background: #ff0000;
+            background: #ff0000; /* YouTube Rot */
             color: white;
-            padding: 10px 20px;
+            padding: 15px 30px;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 50px;
             font-weight: bold;
+            font-size: 1.1em;
             display: inline-block;
-            margin: 15px 0;
+            transition: background 0.3s;
         }
+
+        .abo-button:hover {
+            background: #cc0000; /* Dunkler beim Drüberfahren */
+        }
+
+        /* Der "Weiter"-Text */
         #close-btn {
             display: block;
-            margin-top: 10px;
+            margin-top: 20px;
             color: gray;
             cursor: pointer;
-            font-size: 0.8em;
+            text-decoration: underline;
+            font-size: 0.9em;
         }
     </style>
 </head>
@@ -44,9 +83,9 @@
     <div id="overlay">
         <div id="popup">
             <h2>Halt Stopp! 🛑</h2>
-            <p>Bevor du meine Website siehst, abonniere doch kurz meinen Kanal:</p>
+            <p>Abonniere kurz meinen Kanal, um die Website freizuschalten:</p>
             
-            <a href="https://www.youtube.com/@YTBananiel1616?sub_confirmation=1" 
+            <a href="DEIN_YOUTUBE_LINK_MIT_CONFIRMATION_HIER_EINFÜGEN" 
                target="_blank" 
                class="abo-button" 
                onclick="showClose()">JETZT ABONNIEREN</a>
@@ -55,16 +94,19 @@
         </div>
     </div>
 
-    <h1>Willkommen auf meiner geheimen Website!</h1>
-    <p>Hier steht der eigentliche Inhalt...</p>
+    <h1>Willkommen auf meiner exklusiven Website!</h1>
+    <p>Herzlichen Glückwunsch, du hast es geschafft.</p>
+    <p>Hier kannst du jetzt deinen Inhalt einfügen (Texte, Bilder, Videos...).</p>
+
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzEyd3lkNmRmeHZwYzJxdnN0dW92MXp4NmF0bWZtOHRkNzhsbWJtOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKr3nzbh5WgKQzb/giphy.gif" alt="Feiernd">
 
     <script>
         function showClose() {
-            // Zeigt den Schließen-Button erst an, wenn man geklickt hat
+            // Zeigt den Schließen-Button an
             document.getElementById('close-btn').style.display = 'block';
         }
         function closePopup() {
-            // Schließt das Fenster
+            // Schließt das ganze Overlay
             document.getElementById('overlay').style.display = 'none';
         }
     </script>
