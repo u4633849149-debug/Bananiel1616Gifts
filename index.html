@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robux Giveaway | Bananiel1616</title>
     <style>
+        /* Alles bleibt durchgehend Schwarz */
         body {
             background-color: #000000;
             color: white;
@@ -25,13 +26,13 @@
             border: 1px solid #333;
             width: 90%;
             max-width: 450px;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
         }
 
         .step { display: none; }
         .active { display: block; }
 
-        h2 { color: #ff0000; margin-top: 0; font-size: 1.8em; }
+        h2 { color: #ff0000; margin-top: 0; font-size: 1.8em; text-transform: uppercase; }
 
         input {
             width: 100%;
@@ -43,6 +44,7 @@
             color: white;
             box-sizing: border-box;
             outline: none;
+            font-size: 1em;
         }
 
         button, .abo-btn {
@@ -59,19 +61,28 @@
             font-size: 1em;
             transition: 0.3s;
             margin-top: 10px;
+            text-transform: uppercase;
         }
 
         button:hover, .abo-btn:hover { background: #cc0000; transform: scale(1.02); }
 
         #timer {
-            font-size: 2.5em;
+            font-size: 2.8em;
             color: #00ff00;
             margin: 20px 0;
             font-weight: bold;
             font-family: 'Courier New', Courier, monospace;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
         }
 
-        .success-msg { color: #00ff00; font-weight: bold; font-size: 1.3em; }
+        .success-msg { color: #00ff00; font-weight: bold; font-size: 1.4em; margin-bottom: 5px; }
+        
+        #check-info {
+            color: yellow;
+            font-size: 0.8em;
+            margin-top: 15px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -79,9 +90,17 @@
     <div class="container">
         <div id="step1" class="step active">
             <h2>STOPP! 🛑</h2>
-            <p>Abonniere meinen Kanal, um teilzunehmen:</p>
-            <a href="https://youtube.com/@YTBananiel1616?sub_confirmation=1" target="_blank" class="abo-btn" onclick="document.getElementById('next1').style.display='block'">1. JETZT ABONNIEREN</a>
-            <button id="next1" style="display:none;" onclick="nextStep(2)">2. WEITER ZUR TEILNAHME</button>
+            <p>Abonniere meinen Kanal, um die Teilnahme freizuschalten:</p>
+            
+            <a href="https://youtube.com/@YTBananiel1616?sub_confirmation=1" 
+               target="_blank" 
+               class="abo-btn" 
+               onclick="showAboConfirmation()">1. JETZT ABONNIEREN</a>
+
+            <div id="after-click" style="display:none;">
+                <p id="check-info">Prüfung läuft... Klicke weiter, wenn du fertig bist:</p>
+                <button onclick="nextStep(2)">2. WEITER ZUM FORMULAR</button>
+            </div>
         </div>
 
         <div id="step2" class="step">
@@ -93,22 +112,28 @@
 
         <div id="step3" class="step">
             <p class="success-msg">REGISTRIERT! ✅</p>
-            <p>Der Gewinner wird gezogen in:</p>
-            <div id="timer">00:00:00:00</div>
-            <p style="font-size: 0.8em; color: #888; margin-top: 20px;">Die Auflösung gibt es auf YouTube bei <b>Bananiel1616</b>!</p>
+            <p>Die Ziehung findet für alle gleichzeitig statt in:</p>
+            <div id="timer">LÄDT...</div>
+            <p style="font-size: 0.8em; color: #888;">Schau am Ende des Timers auf meinem Kanal vorbei!</p>
+            <p style="font-size: 0.7em; color: #555;">(Nur Abonnenten können gewinnen)</p>
         </div>
     </div>
 
     <script>
-        // Ziel-Datum: 1. April 2026, 20:00 Uhr
+        // DAS DATUM: 1. April 2026, 20:00 Uhr
         const globalEndTime = new Date(2026, 3, 1, 20, 0, 0).getTime(); 
 
+        // Prüfen beim Laden der Seite
         window.onload = function() {
-            if (localStorage.getItem("hasJoined")) {
+            if (localStorage.getItem("hasJoinedGiveaway")) {
                 showStep(3);
                 startGlobalCountdown();
             }
         };
+
+        function showAboConfirmation() {
+            document.getElementById('after-click').style.display = 'block';
+        }
 
         function nextStep(stepNum) {
             showStep(stepNum);
@@ -120,12 +145,13 @@
         }
 
         function finishRegistration() {
-            const name = document.getElementById('robloxName').value;
-            if(name.length < 3) {
-                alert("Bitte gib einen gültigen Namen ein!");
+            const nameInput = document.getElementById('robloxName').value;
+            if(nameInput.length < 3) {
+                alert("Bitte gib einen richtigen Roblox Namen ein!");
                 return;
             }
-            localStorage.setItem("hasJoined", "true");
+            // Merken, dass der Nutzer fertig ist
+            localStorage.setItem("hasJoinedGiveaway", "true");
             showStep(3);
             startGlobalCountdown();
         }
