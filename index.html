@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robux Giveaway</title>
+    <title>Robux Giveaway | Bananiel1616</title>
     <style>
+        /* Alles bleibt durchgehend Schwarz */
         body {
-            background-color: black; /* Hintergrund immer schwarz */
+            background-color: #000000;
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -18,44 +19,58 @@
         }
 
         .container {
-            background: #1a1a1a;
-            padding: 30px;
-            border-radius: 15px;
+            background: #111111;
+            padding: 40px;
+            border-radius: 20px;
             text-align: center;
-            border: 2px solid #333;
+            border: 1px solid #333;
             width: 90%;
-            max-width: 400px;
+            max-width: 450px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
         }
 
         .step { display: none; }
         .active { display: block; }
 
+        h2 { color: #ff0000; margin-top: 0; }
+
         input {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: none;
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #222;
+            color: white;
+            box-sizing: border-box;
         }
 
-        button {
-            background: #00ff00;
-            color: black;
+        button, .abo-btn {
+            background: #ff0000;
+            color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 15px 25px;
             font-weight: bold;
             cursor: pointer;
-            border-radius: 5px;
-            text-transform: uppercase;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            font-size: 1em;
+            transition: 0.3s;
         }
 
-        .abo-btn { background: #ff0000; color: white; text-decoration: none; display: inline-block; padding: 10px 20px; margin-bottom: 10px; border-radius: 5px; }
+        button:hover, .abo-btn:hover { background: #cc0000; }
 
         #timer {
-            font-size: 2em;
+            font-size: 2.5em;
             color: #00ff00;
-            margin-top: 20px;
+            margin: 20px 0;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
+
+        .success-msg { color: #00ff00; font-weight: bold; font-size: 1.2em; }
     </style>
 </head>
 <body>
@@ -63,66 +78,58 @@
     <div class="container">
         <div id="step1" class="step active">
             <h2>STOPP! 🛑</h2>
-            <p>Abonniere zuerst meinen Kanal:</p>
-            <a href="DEIN_YOUTUBE_LINK?sub_confirmation=1" target="_blank" class="abo-btn" onclick="showNextBtn()">JETZT ABONNIEREN</a>
-            <br>
-            <button id="next1" style="display:none;" onclick="nextStep(2)">Ich habe abonniert</button>
+            <p>Du musst erst meinen Kanal abonnieren, um am Giveaway teilzunehmen:</p>
+            <a href="https://youtube.com/@YTBananiel1616?sub_confirmation=1" target="_blank" class="abo-btn" onclick="document.getElementById('next1').style.display='block'">JETZT ABONNIEREN</a>
+            <button id="next1" style="display:none; margin-top: 15px;" onclick="nextStep(2)">Ich habe abonniert!</button>
         </div>
 
         <div id="step2" class="step">
-            <h2>Roblox Daten</h2>
-            <p>Gib deinen Namen ein, um teilzunehmen:</p>
-            <input type="text" id="robloxName" placeholder="Roblox Benutzername">
-            <br>
-            <button onclick="nextStep(3)">Teilnehmen</button>
+            <h2>DEIN NAME</h2>
+            <p>Gib deinen Roblox-Benutzernamen ein:</p>
+            <input type="text" id="robloxName" placeholder="Dein Roblox Name...">
+            <button onclick="nextStep(3)">TEILNEHMEN</button>
         </div>
 
         <div id="step3" class="step">
-            <h2 style="color: #00ff00;">FERTIG! ✅</h2>
-            <p>Du bist im Lostopf. Das Giveaway endet in:</p>
+            <p class="success-msg">FERTIG! ✅</p>
+            <p>Du bist im Lostopf. Der Gewinner wird in diesem Zeitraum gezogen:</p>
             <div id="timer">03:00:00:00</div>
-            <p style="font-size: 0.8em; color: gray; margin-top: 20px;">Schließe diese Seite nicht, oder merke dir den Zeitpunkt!</p>
+            <p style="font-size: 0.8em; color: #777;">Verpasse die Ziehung nicht auf meinem Kanal!</p>
         </div>
     </div>
 
     <script>
-        function showNextBtn() {
-            document.getElementById('next1').style.display = 'inline-block';
-        }
-
         function nextStep(stepNum) {
-            // Alle Schritte ausblenden
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            // Gewünschten Schritt einblenden
             document.getElementById('step' + stepNum).classList.add('active');
 
             if(stepNum === 3) {
-                startTimer();
+                startCountdown();
             }
         }
 
-        function startTimer() {
-            // Timer auf 3 Tage setzen
-            let time = 3 * 24 * 60 * 60; 
-            const timerDisplay = document.getElementById('timer');
+        function startCountdown() {
+            // Timer für 3 Tage (in Sekunden)
+            let totalSeconds = 3 * 24 * 60 * 60; 
+            const timerDiv = document.getElementById('timer');
 
-            const interval = setInterval(() => {
-                let days = Math.floor(time / (24 * 3600));
-                let hours = Math.floor((time % (24 * 3600)) / 3600);
-                let mins = Math.floor((time % 3600) / 60);
-                let secs = time % 60;
+            const x = setInterval(function() {
+                let days = Math.floor(totalSeconds / (24 * 60 * 60));
+                let hours = Math.floor((totalSeconds % (24 * 60 * 60)) / (60 * 60));
+                let minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+                let seconds = Math.floor(totalSeconds % 60);
 
-                timerDisplay.innerHTML = 
+                timerDiv.innerHTML = 
                     (days < 10 ? "0" + days : days) + ":" +
                     (hours < 10 ? "0" + hours : hours) + ":" +
-                    (mins < 10 ? "0" + mins : mins) + ":" +
-                    (secs < 10 ? "0" + secs : secs);
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" +
+                    (seconds < 10 ? "0" + seconds : seconds);
 
-                if (time <= 0) {
-                    clearInterval(interval);
-                    timerDisplay.innerHTML = "GEWINNER WIRD GEWÄHLT...";
+                if (totalSeconds <= 0) {
+                    clearInterval(x);
+                    timerDiv.innerHTML = "ZIEHUNG LÄUFT...";
                 }
-                time--;
+                totalSeconds--;
             }, 1000);
         }
     </script>
