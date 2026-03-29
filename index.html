@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Willkommen auf meiner Seite</title>
+    <style>
+        /* Das Design für das Overlay (Hintergrund) */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+        /* Das Fenster in der Mitte */
+        #popup {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .abo-button {
+            background: #ff0000;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 15px 0;
+        }
+        #close-btn {
+            display: block;
+            margin-top: 10px;
+            color: gray;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
 
+    <div id="overlay">
+        <div id="popup">
+            <h2>Halt Stopp! 🛑</h2>
+            <p>Bevor du meine Website siehst, abonniere doch kurz meinen Kanal:</p>
+            
+            <a href="https://www.youtube.com/@DEIN_KANAL?sub_confirmation=1" 
+               target="_blank" 
+               class="abo-button" 
+               onclick="showClose()">JETZT ABONNIEREN</a>
+
+            <span id="close-btn" style="display:none;" onclick="closePopup()">Ich habe abonniert – Weiter zur Seite</span>
+        </div>
+    </div>
+
+    <h1>Willkommen auf meiner geheimen Website!</h1>
+    <p>Hier steht der eigentliche Inhalt...</p>
+
+    <script>
+        function showClose() {
+            // Zeigt den Schließen-Button erst an, wenn man geklickt hat
+            document.getElementById('close-btn').style.display = 'block';
+        }
+        function closePopup() {
+            // Schließt das Fenster
+            document.getElementById('overlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
